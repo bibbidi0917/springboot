@@ -2,6 +2,7 @@ package com.koscom.springboot.web;
 
 import com.koscom.springboot.domain.posts.Posts;
 import com.koscom.springboot.domain.posts.PostsRepository;
+import com.koscom.springboot.web.dto.posts.PostsResponseDto;
 import com.koscom.springboot.web.dto.posts.PostsSaveRequestDto;
 import com.koscom.springboot.web.dto.posts.PostsUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
@@ -94,4 +95,25 @@ public class PostsApiControllerTest {
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
     }
 
+    @Test
+    public void Posts_1건_조회된다() throws Exception { //하나 저장하고 그거 조회함
+//given
+        Posts savedPosts = postsRepository.save(Posts.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build());
+
+        Long updateId = savedPosts.getId();
+
+        String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
+
+        //when
+        ResponseEntity<PostsResponseDto> responseEntity = restTemplate.getForEntity(url, PostsResponseDto.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().getId()).isEqualTo(updateId);
+        assertThat(responseEntity.getBody().getTitle()).isEqualTo("title");
+    }
 }

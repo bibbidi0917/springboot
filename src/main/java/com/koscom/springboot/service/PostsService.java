@@ -2,6 +2,7 @@ package com.koscom.springboot.service;
 
 import com.koscom.springboot.domain.posts.Posts;
 import com.koscom.springboot.domain.posts.PostsRepository;
+import com.koscom.springboot.web.dto.posts.PostsResponseDto;
 import com.koscom.springboot.web.dto.posts.PostsSaveRequestDto;
 import com.koscom.springboot.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,12 @@ public class PostsService {
         entity.update(dto.getTitle(), dto.getContent());
 
         return entity.getId();
+    }
+
+    //조회 - myBatis 혹은 querydsl
+    public PostsResponseDto findById(Long id){
+        Posts entity = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당사용자는 없습니다. id = " + id));
+        return new PostsResponseDto(entity);
     }
 }
