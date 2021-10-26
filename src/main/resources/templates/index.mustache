@@ -5,6 +5,13 @@
     <div class="row">
         <div class="col-md-6">
             <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+            {{#user}} <!-- model에 username이 있으면 로그인한 상태면 로그아웃 버튼이 나옴-->
+                Logged in as: <span id="user">{{user}}</span>
+                <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+            {{/user}}
+            {{^user}} <!-- ^ not 표시 : model에 username이 없으면 로그인 버튼이 나옴-->
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+            {{/user}}
         </div>
     </div>
     <br>

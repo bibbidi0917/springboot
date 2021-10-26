@@ -27,7 +27,7 @@ public class PostsService {
     }
 
     //수정
-    @Transactional
+    @Transactional //master DB로 감
     public Long update(Long id, PostsUpdateRequestDto dto) {
         // DB에서 가져온 값을 JPA 내부에서 캐시(1차 캐시)
         Posts entity = postsRepository.findById(id)
@@ -46,7 +46,7 @@ public class PostsService {
         return new PostsResponseDto(entity);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //조회용 DB로 감 = cluster read endpoint로 가고, 거기서 부하적은 db로 쿼리 보내줌.
     public List<PostsListResponseDto> findAllDesc() {
         return postsRepository.findAllDesc().stream() //List<Posts>로 오면 그걸 스트림으로 바꾸고
                 .map(PostsListResponseDto::new) //post 하나하나를 PostsListResponseDto 로 바꿔서
