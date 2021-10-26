@@ -25,3 +25,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build # gradlew로 빌도 (test & jar 파일 생성을 수행)
         shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2 #플러그인 추가함
+        id: current-time #전역변수 current-time 으로 저장되어, 다른 스텝에서 쓸 수 있음
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00" #한국 시간
+
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
+        shell: bash
